@@ -1,6 +1,6 @@
 # Ideas & Potential Improvements
 
-Researched 2026-03-26. Items roughly ordered by expected value.
+Researched 2026-03-27. Items roughly ordered by expected value.
 
 ---
 
@@ -19,17 +19,21 @@ nvm, pyenv, rbenv, and similar tools — all in one binary. Compatible with `.to
 (asdf ecosystem) and its own `mise.toml`. It also handles per-directory env vars and
 project tasks, partially overlapping with direnv and Makefiles.
 
-Adopting mise would let us drop the nvm block and simplify the conda setup in `.zshrc`.
+Adopting mise would let us drop the nvm block and simplify the conda setup in `.zshrc`,
+fixing shell startup time in the process.
 
 ## tmux Plugins
 
 Worth adding to the existing TPM setup:
 
 - **tmux-resurrect** + **tmux-continuum** — persist and auto-restore sessions across reboots.
-- **catppuccin/tmux** — official Catppuccin theme; would replace the hand-rolled status bar
-  colors and stay in sync with the Ghostty/Starship theme automatically.
+- **catppuccin/tmux** — official Catppuccin theme plugin; would replace the hand-rolled status bar
+  colors and stay in sync with the Ghostty/Starship theme automatically. Supports customizable
+  status modules (git, battery, weather, etc.).
 - **tmux-sessionx** — fzf-powered session switcher.
 - **tmux-thumbs** or **tmux-fingers** — Vimium-style hints to quick-copy visible URLs, paths, and hashes.
+- **tmux-yank** — cross-platform clipboard integration. Auto-detects `pbcopy`, `xclip`, `xsel`,
+  `wl-copy`. Would fix the current macOS-only `pbcopy` hardcoding in the tmux config.
 
 ## Modern CLI Tools
 
@@ -39,18 +43,44 @@ Mature Rust/Go replacements worth aliasing in `.zshrc`:
 |------|----------|-------|
 | **eza** | `ls` | git-aware, icons, tree view |
 | **bat** | `cat` | syntax highlighting, git gutter; also powers fzf previews |
-| **delta** | `diff` | side-by-side git diffs with syntax highlighting (`git config core.pager delta`) |
+| **delta** | `diff` | side-by-side git diffs with syntax highlighting; has a Catppuccin theme |
 | **fd** | `find` | simpler syntax, respects `.gitignore` |
-| **ripgrep** | `grep` | very fast, used internally by VS Code |
+| **ripgrep** | `grep` | very fast, used internally by VS Code and Neovim |
 | **dust** | `du` | visual disk usage |
 | **lazygit** | — | TUI git client, great for interactive rebase and hunk staging |
 | **yazi** | ranger/nnn | async file manager with image preview in Ghostty, Lua plugin system |
 | **btop** | `top`/`htop` | polished system monitor TUI |
+| **tldr** | `man` | community-maintained simplified command examples |
 
 The bootstrap script should install these, and `.zshrc` should alias `ls`→`eza`,
 `cat`→`bat`, `grep`→`rg`, `du`→`dust`, `find`→`fd` where available.
 
-## Plugin Manager: Replace Oh My Zsh
+## Git Configuration (new stow package)
+
+Create a `git` stow package to manage `~/.gitconfig`. Would include:
+
+- **delta** as the default pager with Catppuccin Mocha theme.
+- Useful aliases: `git lg` (pretty log graph), `git recent` (recent branches), `git undo` (soft reset last commit).
+- **git-absorb** — automatically fixup commits based on staged changes. Great for cleaning up PR history.
+- Default branch, pull strategy, and other sensible defaults.
+
+## fzf Enhancements
+
+- **fzf-tab** — replace zsh's default completion menu with fzf. Tab-complete becomes fuzzy
+  with preview windows. Very natural if you already use fzf everywhere.
+- **Catppuccin Mocha colors for fzf** — match the color scheme via `FZF_DEFAULT_OPTS` color flags.
+- **Preview integration** — use bat for file preview, eza for directory preview in fzf widgets.
+- **Use fd as default finder** — `export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'`
+  for faster, `.gitignore`-respecting file search.
+- **fzf git helpers** — fuzzy-find branches, log entries, and stashes.
+
+## zsh Plugins to Evaluate
+
+- **fast-syntax-highlighting** — faster drop-in replacement for zsh-syntax-highlighting.
+- **zsh-completions** — additional completion definitions for common tools.
+- **zsh-you-should-use** — reminds you when you have an alias for a command you typed longhand.
+
+## Plugin Manager: Consider Replacing Oh My Zsh
 
 Oh My Zsh is convenient but heavy. Since we already use Starship for the prompt, OMZ is
 mainly providing plugin management and a few built-in completions. Lighter alternatives:
@@ -61,14 +91,6 @@ mainly providing plugin management and a few built-in completions. Lighter alter
 
 Either would noticeably improve shell startup time. Benchmark first with
 `hyperfine 'zsh -ic exit'` to see if the current startup is actually a problem.
-
-## zsh Plugins to Evaluate
-
-- **fast-syntax-highlighting** — faster drop-in replacement for zsh-syntax-highlighting.
-- **zsh-completions** — additional completion definitions for common tools.
-- **zsh-you-should-use** — reminds you when you have an alias for a command you typed
-  longhand.
-- **zsh-autopair** — auto-close brackets and quotes on the command line.
 
 ## Per-Directory Environments: direnv
 
@@ -84,15 +106,25 @@ you need complex logic or Nix integration beyond what mise provides.
   across modules — cleaner than inline hex codes.
 - Add a `direnv` or `mise` module once those tools are adopted.
 - Add `git_metrics` module (shows lines added/removed) for richer git context.
+- Add `docker_context` module to show container context when relevant.
 
-## Ghostty Native Splits
+## Ghostty
 
-Ghostty has built-in splits and tabs, which could reduce reliance on tmux for local
-sessions. tmux remains essential for remote/persistent sessions, but for quick local
-work, Ghostty splits avoid the overhead and give tighter font/theme integration.
+- **Native splits** — Ghostty has built-in splits and tabs that could complement tmux for
+  quick local sessions. tmux remains essential for remote/persistent work, but Ghostty splits
+  give tighter font/theme integration. Worth setting up keybinds alongside the tmux workflow.
+- **Shell integration** — re-evaluate enabling cursor shape per mode, command marking, and
+  clickable file paths.
+- **Add Ghostty to bootstrap.sh** — currently not installed by the bootstrap script.
 
-Worth exploring keybinds that make Ghostty splits feel natural alongside the existing
-tmux workflow.
+## Cross-Platform Fixes
+
+These are bugs/limitations in the current setup that should be addressed:
+
+- **Fix hardcoded paths in `.zshrc`** — replace `/Users/johnmoses/` with `$HOME` where possible
+  (conda, OPAM, Perl, Java blocks).
+- **Fix tmux clipboard on Linux** — current config uses `pbcopy` (macOS-only). Either add
+  platform detection or adopt `tmux-yank` plugin.
 
 ## Fonts to Try
 
@@ -103,27 +135,17 @@ JetBrains Mono is solid, but two newer options are worth trying:
 - **Maple Mono** — distinctive rounded style that's gained a large following. Nerd Font
   variant available.
 
-## Dotfile Management: chezmoi
-
-[chezmoi](https://www.chezmoi.io/) offers templating, encrypted secrets, and multi-machine
-support over Stow's simple symlinks. Only worth the migration cost if:
-
-- Managing dotfiles across multiple machines with different configs.
-- Needing to store secrets (API keys, tokens) in the repo.
-- Wanting a single-binary bootstrap (no `stow` dependency).
-
-Current Stow setup is fine for a single-machine workflow.
-
-## Zellij as a tmux Alternative
-
-[Zellij](https://zellij.dev/) is a Rust-based terminal multiplexer with a discoverable UI,
-WASM plugin system, floating panes, and built-in session persistence (no plugin needed).
-Mature enough for daily use as of 2025, but switching has a real cost if you have deep tmux
-muscle memory. Consider running both side-by-side before committing.
-
 ## Bootstrap Script Improvements
 
 - Add a `Brewfile` for declarative macOS package management instead of inline `brew install`
   commands.
-- Add Linux support for Ghostty installation (currently only macOS packages are installed).
+- Add Linux support for Ghostty installation.
 - Add `--dry-run` flag to preview what would be installed/linked.
+
+## Lower Priority / Explore Later
+
+- **Zellij** — Rust-based terminal multiplexer with floating panes, WASM plugins, and built-in
+  session persistence. Mature enough for daily use, but switching from tmux has real muscle
+  memory cost. Consider running side-by-side.
+- **Neovim stow package** — if not managed elsewhere, track Neovim config in this repo for
+  full reproducibility.
