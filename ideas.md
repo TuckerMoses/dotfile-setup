@@ -68,7 +68,10 @@ Create a `git` stow package to manage `~/.gitconfig`. Would include:
 
 - **fzf-tab** — replace zsh's default completion menu with fzf. Tab-complete becomes fuzzy
   with preview windows. Very natural if you already use fzf everywhere.
-- **Catppuccin Mocha colors for fzf** — match the color scheme via `FZF_DEFAULT_OPTS` color flags.
+- **Catppuccin Mocha colors for fzf** — official theme at `catppuccin/fzf`. Match the color
+  scheme via `FZF_DEFAULT_OPTS` color flags. Currently a gap in theme consistency.
+- **`--tmux` popup mode** — fzf 0.53+ can open in a tmux popup instead of inline. Cleaner
+  experience, requires tmux 3.3+.
 - **Preview integration** — use bat for file preview, eza for directory preview in fzf widgets.
 - **Use fd as default finder** — `export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'`
   for faster, `.gitignore`-respecting file search.
@@ -110,6 +113,9 @@ you need complex logic or Nix integration beyond what mise provides.
 
 ## Ghostty
 
+- **Ghostty 1.3 features** — scrollback search (`Ctrl+Shift+F`), click-to-move cursor in
+  prompts, native scrollbars, and keybind chaining are all available now. Consider enabling
+  `command-finished-notification` for long-running commands (configurable delay threshold).
 - **Native splits** — Ghostty has built-in splits and tabs that could complement tmux for
   quick local sessions. tmux remains essential for remote/persistent work, but Ghostty splits
   give tighter font/theme integration. Worth setting up keybinds alongside the tmux workflow.
