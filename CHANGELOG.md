@@ -7,6 +7,13 @@ All notable changes to this dotfiles setup.
 ### Planned
 - tmux agent completion notifications ([plan](docs/plans/tmux-agent-notifications.md))
 - Neovim ↔ Claude Code sync ([plan](docs/plans/neovim-claude-sync.md))
+- Cross-platform fixes for zsh-vi-mode and hardcoded paths ([plan](docs/plans/cross-platform-fixes.md))
+- Modern CLI tools: eza, bat, delta, fd, ripgrep ([plan](docs/plans/modern-cli-tools.md))
+- Git configuration stow package with delta pager ([plan](docs/plans/git-config.md))
+- fzf enhancements: Catppuccin colors, fzf-tab, tmux popups ([plan](docs/plans/fzf-enhancements.md))
+- tmux plugins: resurrect, continuum, yank, sessionx ([plan](docs/plans/tmux-plugins.md))
+- Atuin shell history replacement ([plan](docs/plans/atuin-shell-history.md))
+- mise version manager (replaces nvm/pyenv) ([plan](docs/plans/mise-version-manager.md))
 
 ## [2026-03-27]
 

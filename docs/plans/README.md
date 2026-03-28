@@ -8,6 +8,13 @@ Implementation plans for terminal/workflow improvements. Each plan is self-conta
 |------|--------|-------------|
 | [tmux-agent-notifications](tmux-agent-notifications.md) | `pending` | macOS desktop notifications when Claude Code finishes, click to switch pane |
 | [neovim-claude-sync](neovim-claude-sync.md) | `pending` | Keep Neovim in sync with Claude Code file changes (3 tiers) |
+| [cross-platform-fixes](cross-platform-fixes.md) | `pending` | Fix hardcoded paths and cross-platform zsh-vi-mode/clipboard |
+| [modern-cli-tools](modern-cli-tools.md) | `pending` | Install eza, bat, delta, fd, ripgrep and add shell aliases |
+| [git-config](git-config.md) | `pending` | New stow package for ~/.gitconfig with delta pager and aliases |
+| [fzf-enhancements](fzf-enhancements.md) | `pending` | Catppuccin colors, fzf-tab, tmux popups, git helpers |
+| [tmux-plugins](tmux-plugins.md) | `pending` | Add resurrect, continuum, tmux-yank, and sessionx plugins |
+| [atuin-shell-history](atuin-shell-history.md) | `pending` | SQLite-backed shell history with fuzzy search and per-directory filtering |
+| [mise-version-manager](mise-version-manager.md) | `pending` | Replace nvm/pyenv with mise for faster shell startup ⚠️ high-effort |
 
 ## Statuses
 
