@@ -8,6 +8,7 @@ All notable changes to this dotfiles setup.
 - tmux agent completion notifications ([plan](docs/plans/tmux-agent-notifications.md))
 - Neovim ↔ Claude Code sync ([plan](docs/plans/neovim-claude-sync.md))
 - tmux session persistence ([plan](docs/plans/tmux-session-persistence.md))
+- Agentic workflow helpers — teammate mode, worktree functions, tmux integration ([plan](docs/plans/agentic-workflow-helpers.md))
 
 ## [2026-03-29]
 
