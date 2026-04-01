@@ -55,7 +55,7 @@ ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 echo "==> Stowing dotfiles..."
 mkdir -p "$HOME/.config"
 
-for pkg in tmux zsh ghostty starship; do
+for pkg in tmux zsh ghostty starship claude; do
     if [[ -d "$DOTFILES_DIR/$pkg" ]]; then
         echo "    stowing $pkg"
         stow -d "$DOTFILES_DIR" -t "$HOME" --restow "$pkg"
